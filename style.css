@@ -1,0 +1,173 @@
+body{
+    margin: auto;
+    max-width: 1290px;
+    font-family: 'Nunito Sans', sans-serif;
+}
+
+
+/* 
+    NAVIGATIONBAR 
+*/
+
+.navigationbar{
+    margin-bottom: 2em;
+    background: #333333;
+    padding: 14px 16px;
+    display: none;
+}
+.navigationbar > a {
+    padding-left: 16px;
+    text-decoration: none;
+    color: ivory;
+}
+
+
+/* 
+    FORMS
+*/
+
+.forms {
+    margin-top: 15%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 500px;
+    border: 1px #1d1d1d solid;
+    display: none;
+}
+
+.imgApp{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    height: 100%;
+  
+}
+
+
+/* 
+    LOGIN 
+*/
+
+.f-login > h1{
+    font-family: 'Press Start 2P', cursive; 
+}
+
+.f-login{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    height: 100%;
+    border: 1px #1d1d1d solid;
+    
+}
+
+form > ul{
+    padding-left: 0;    
+}
+
+form > ul > li, form > fieldset ul> li{
+    list-style-type: none;
+    margin-bottom: 1em;
+}
+
+input { 
+    font-family: FontAwesome, "Open Sans", Verdana, sans-serif;
+    width: 200px;
+    height: 30px;
+    border-radius: 100px;
+    border-bottom: darksalmon;
+    background: #e7e7e7;
+    
+}
+
+ul > li > button {
+    width: 100%;
+    height: 30px;
+    border-radius: 100px;
+    color: white;
+    background:#33b349;
+}
+
+li > a {
+    margin-left: 37%;
+    text-decoration-line: none;
+}
+
+
+/* 
+    SIGNUP 
+*/
+
+.f-signup{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    height: 100%;
+    border: 1px #1d1d1d solid;
+    
+}
+
+div > input {
+    width: auto;
+    height: 15px;
+}
+
+.f-signup > form > fieldset > ul{
+    padding-left: 0;
+}
+
+.f-signup{ display: none}
+
+
+/* 
+    DASHBOARD 
+*/
+
+.dashboard{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-top: 15%;
+    min-width: 1290px;
+    min-height: 540px;
+    border: 1px #1d1d1d solid;
+}
+
+.header-list{
+    width: 428px;
+    height: 88px;
+    border: 1px #1d1d1d solid;
+    overflow: hidden;
+}
+
+.header-task{
+    width: 858px;
+    height: 88px;
+    border: 1px #1d1d1d solid;
+}
+.name-list{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    width: 428px;
+    height: 448px;
+    border: 1px #1d1d1d solid;
+}
+.name-task{
+    width: 858px;
+    height: 448px;
+    border: 1px #1d1d1d solid;
+}
+
+#create-list{
+    
+}
+

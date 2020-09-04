@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To Do List</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="container">
+
+  <div class="navigationbar">
+    <a><button type="submit">Logout</button></a>
+    <a href="/user.html">Account Settings</a>
+  </div>
+
+  <div class="forms">
+
+    <div class="imgApp">
+      <img src="tdl.png" alt="2dolist" width="200px">
+    </div>
+
+    <div class="f-login">
+      <h1>Todolist.App</h1>
+        <form action="">
+          <ul>
+            <li><input type="email" name="lpsw" placeholder="  &#xf007  email" required></li>
+            <li><input type="password" name="lpsw" placeholder="  &#xf084 password" required></li>
+            <li><button type="submit"><b>L O G I N</b></button></li>
+            <li><a href=""><b>Sign Up</b></a></li>
+          </ul>
+        </form>
+    </div>
+
+    <div class="f-signup">
+      <form action="">
+        <fieldset>
+          <legend><b>Sign Up</b></legend>
+            <ul>
+              <li><input type="text" name="sname" placeholder="  name" required></li>
+              <li><input type="text" name="slname" placeholder="  last name" required></li>
+              <li><input type="email" name="spsw" placeholder="  email" required></li>
+              <li><input type="password" name="spsw" placeholder="  password" required></li>
+              <li><div class="tyc"><input type="checkbox" checked="checked" name="tyc" required><span>I agree to the Terms of Use</span></div></li>
+              <li><a href=""><button type="submit">Register</button></a></li>
+            </ul>
+        </fieldset>
+      </form>
+    </div>   
+      
+  </div>
+  
+  <div class="dashboard">
+
+    <div class="header-list">
+      <p>ToDoList!</p>
+      <p id="total-list">0</p>
+      </div>
+    <div class="header-task">
+      <p>HeaderTask</p>
+    </div>
+
+    <div class="name-list">
+     <p>NameList</p>
+     <div id="create-list">
+       
+     </div>
+    </div>
+    <div class="name-task">
+      <p>NameTask</p>
+     </div>
+  </div>
+
+</div>
+    
+</body>
+</html>
