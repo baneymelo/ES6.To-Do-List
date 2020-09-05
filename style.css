@@ -152,7 +152,7 @@ div > input {
     height: 88px;
     border: 1px #1d1d1d solid;
 }
-.name-list{
+.list{
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -160,6 +160,7 @@ div > input {
     width: 428px;
     height: 448px;
     border: 1px #1d1d1d solid;
+    background: #EBECF0;
 }
 .name-task{
     width: 858px;
@@ -167,7 +168,61 @@ div > input {
     border: 1px #1d1d1d solid;
 }
 
-#create-list{
+#name-list{
+    width: 375px;
+    height: 350px;
+    border: 1px #1d1d1d solid;
+}
+
+#add-list > ul > a > li {
+    list-style-type: none;
+    text-align: center;
+    font-size: 24px;
     
 }
 
+#name-list > ul, #add-list > ul{
+    padding-inline-start: 0;
+}
+
+#name-list > ul > li{
+    list-style: none;
+    margin-top: 10px;
+    border: 1px #1d1d1d solid;
+    overflow: hidden;
+    background: #fff;
+}
+
+#add-list{
+    width: 375px;
+    height: 64px;
+    border: 1px #1d1d1d solid;
+}
+
+#add-list > ul > li{
+    list-style: none;
+    border: 1px #1d1d1d solid;
+
+}
+
+#add-list > ul{
+    margin-block-start: 0;
+    margin-block-end: 0;
+}
+
+#add-list-input{
+    width: 100%;
+    background: none;
+    color: inherit;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+    background: #fff;
+    
+}
+
+#add-list-input::placeholder {
+    text-align: center;
+}
