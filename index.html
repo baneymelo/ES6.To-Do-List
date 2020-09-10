@@ -24,20 +24,20 @@
 
     <div class="f-login">
       <h1>Todolist.App</h1>
-        <form action="">
+        <form onsubmit="return false">
           <ul>
-            <li><input type="email" name="lpsw" placeholder="  &#xf007  email" required></li>
-            <li><input type="password" name="lpsw" placeholder="  &#xf084 password" required></li>
-            <li><button type="submit"><b>L O G I N</b></button></li>
-            <li><a href=""><b>Sign Up</b></a></li>
+            <li><input type="email" id="login-email" placeholder="  &#xf007  email" required></li>
+            <li><input type="password" id="login-psw" placeholder="  &#xf084 password" required></li>
+            <li><button type="button" id="login-button"><b>L O G I N</b></button></li>
+            <li><button type="button" id="signup-button"><b>SIGNUP</b></button></li></li>
           </ul>
         </form>
     </div>
 
     <div class="f-signup">
-      <form action="">
+      <form onsubmit="return false">
         <fieldset>
-          <legend><b>Sign Up</b></legend>
+          <legend><b>SIGNUP</b></legend>
             <ul>
               <li><input type="text" name="sname" placeholder="  name" required></li>
               <li><input type="text" name="slname" placeholder="  last name" required></li>
@@ -73,18 +73,23 @@
 
      <div id="add-list">
       <ul>
-        <li><input type="text" name="" id="add-list-input" placeholder="Insert name of new list.."></li>
+        <li><input type="text" name="" id="add-list-input" placeholder="new list.."></li>
         <a href=""><li>+</li></a>
       </ul>
      </div>
      
     </div>
     <div class="name-task">
-      <p>NameTask</p>
+      <div class="task">
+        <ul>
+          <li>Item1</li>
+          <li><input type="text" name="" id="add-task-input" placeholder=" ↵ to add new item.."></li>
+        </ul>
+      </div>
      </div>
   </div>
 
 </div>
-    
+    <script src="index.js"></script>
 </body>
 </html>

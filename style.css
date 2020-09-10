@@ -33,8 +33,8 @@ body{
     justify-content: center;
     align-items: center;
     height: 500px;
-    border: 1px #1d1d1d solid;
-    display: none;
+    border: 1px #E7E7E7 solid;
+    /* display: none; */
 }
 
 .imgApp{
@@ -62,7 +62,7 @@ body{
     align-items: center;
     width: 50%;
     height: 100%;
-    border: 1px #1d1d1d solid;
+    border: 1px #E7E7E7 solid;
     
 }
 
@@ -82,15 +82,33 @@ input {
     border-radius: 100px;
     border-bottom: darksalmon;
     background: #e7e7e7;
+    text-indent:20px;
+    
+    color: inherit;
+    border: none;
+    cursor: pointer;
+    outline: inherit;
     
 }
 
-ul > li > button {
+#login-button, #signup-button{
     width: 100%;
     height: 30px;
     border-radius: 100px;
     color: white;
+
+    border: none;
+    cursor: pointer;
+    outline: inherit;
+}
+
+#login-button{
     background:#33b349;
+}
+
+#signup-button{
+    color: rgb(32, 32, 32);
+    background:#fcfcfc;
 }
 
 li > a {
@@ -104,14 +122,19 @@ li > a {
 */
 
 .f-signup{
-    display: flex;
+    display: none;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 50%;
     height: 100%;
-    border: 1px #1d1d1d solid;
+    border: 1px #E7E7E7 solid;
     
+}
+
+fieldset{ 
+    border: 1px #c7c5c5 solid;
+    color: #414141
 }
 
 div > input {
@@ -123,7 +146,7 @@ div > input {
     padding-left: 0;
 }
 
-.f-signup{ display: none}
+
 
 
 /* 
@@ -138,6 +161,7 @@ div > input {
     min-width: 1290px;
     min-height: 540px;
     border: 1px #1d1d1d solid;
+    display: none;
 }
 
 .header-list{
@@ -159,19 +183,15 @@ div > input {
 
     width: 428px;
     height: 448px;
-    border: 1px #1d1d1d solid;
+    /* border: 1px #1d1d1d solid; */
     background: #EBECF0;
 }
-.name-task{
-    width: 858px;
-    height: 448px;
-    border: 1px #1d1d1d solid;
-}
+
 
 #name-list{
     width: 375px;
     height: 350px;
-    border: 1px #1d1d1d solid;
+    /* border: 1px #1d1d1d solid; */
 }
 
 #add-list > ul > a > li {
@@ -188,20 +208,22 @@ div > input {
 #name-list > ul > li{
     list-style: none;
     margin-top: 10px;
-    border: 1px #1d1d1d solid;
+    border: 1px #b3c6e7b2 solid;
     overflow: hidden;
-    background: #fff;
+    padding: 0 12px;
+    background: #f6fcfa
 }
 
 #add-list{
     width: 375px;
     height: 64px;
-    border: 1px #1d1d1d solid;
+    /* border: 1px #1d1d1d solid; */
 }
 
 #add-list > ul > li{
     list-style: none;
-    border: 1px #1d1d1d solid;
+    /*  border: 1px #1d1d1d solid;*/
+    
 
 }
 
@@ -210,7 +232,9 @@ div > input {
     margin-block-end: 0;
 }
 
-#add-list-input{
+
+
+#add-list-input, #add-task-input{
     width: 100%;
     background: none;
     color: inherit;
@@ -223,6 +247,18 @@ div > input {
     
 }
 
-#add-list-input::placeholder {
-    text-align: center;
+
+/* 
+    TASK
+*/
+
+.name-task{
+    width: 858px;
+    height: 448px;
+    
+}
+
+.task > ul > li{
+    /* border: 1px #1d1d1d solid; */
+    overflow: hidden;
 }
