@@ -91,7 +91,7 @@ input {
     
 }
 
-#login-button, #signup-button{
+#login-button, #signup-button, #register-button{
     width: 100%;
     height: 30px;
     border-radius: 100px;
@@ -106,14 +106,9 @@ input {
     background:#33b349;
 }
 
-#signup-button{
+#signup-button, #register-button{
     color: rgb(32, 32, 32);
     background:#fcfcfc;
-}
-
-li > a {
-    margin-left: 37%;
-    text-decoration-line: none;
 }
 
 
@@ -145,8 +140,6 @@ div > input {
 .f-signup > form > fieldset > ul{
     padding-left: 0;
 }
-
-
 
 
 /* 

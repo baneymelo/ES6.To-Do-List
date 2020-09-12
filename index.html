@@ -24,12 +24,12 @@
 
     <div class="f-login">
       <h1>Todolist.App</h1>
-        <form onsubmit="return false">
+        <form>
           <ul>
             <li><input type="email" id="login-email" placeholder="  &#xf007  email" required></li>
             <li><input type="password" id="login-psw" placeholder="  &#xf084 password" required></li>
             <li><button type="button" id="login-button"><b>L O G I N</b></button></li>
-            <li><button type="button" id="signup-button"><b>SIGNUP</b></button></li></li>
+            <li><button type="button" id="signup-button"><b>SIGNUP</b></button></li>
           </ul>
         </form>
     </div>
@@ -39,12 +39,12 @@
         <fieldset>
           <legend><b>SIGNUP</b></legend>
             <ul>
-              <li><input type="text" name="sname" placeholder="  name" required></li>
-              <li><input type="text" name="slname" placeholder="  last name" required></li>
-              <li><input type="email" name="spsw" placeholder="  email" required></li>
-              <li><input type="password" name="spsw" placeholder="  password" required></li>
-              <li><div class="tyc"><input type="checkbox" checked="checked" name="tyc" required><span>I agree to the Terms of Use</span></div></li>
-              <li><a href=""><button type="submit">Register</button></a></li>
+              <li><input type="text" id="reg-name" placeholder="  name" required></li>
+              <li><input type="text" id="reg-lname" placeholder="  last name" required></li>
+              <li><input type="email" id="reg-email" placeholder="  email" required></li>
+              <li><input type="password" id="reg-psw" placeholder="  password" required></li>
+              <li><div class="tyc"><input type="checkbox" checked="checked" id="tyc-checkbox" required><span>I agree to the Terms of Use.</span></div></li>
+              <li><button type="button" id="register-button" ><b>Register</b></button></li>
             </ul>
         </fieldset>
       </form>
