@@ -18,11 +18,6 @@ const divsToChangeDisplay = ([...argsToNone],[...argsToFlex]) =>{
 }
 
 /* loginOffDashOn(); */
-
-const email = "1234@gmail.com";
-const psw = "1234";
-let userLogged = "";
-
 /* LOCALSTORAGE REGISTER DATA */
 
 const captureLoginData = (logValue, pswValue) =>{
@@ -94,19 +89,15 @@ const validateEmptyInputs = () =>{
 /* SEARCHING EXISTING MAIL */
 
 
-let allEmail = [];
-
-const fillEmail = () =>{
-    let index = 0;
+const sequentialSearch = (emailToBeSearched) =>{
     Object.getOwnPropertyNames(localStorage).forEach(e => {
-        allEmail[index] = e;
-        index++;
-    });
-}
-
-const sequentialSearch = (emailLocalStorage) =>{
-    Object.getOwnPropertyNames(emailLocalStorage).forEach(e => {
-        console.log(e);
+        console.log(e, emailToBeSearched);
+        if (e === emailToBeSearched) {
+            return true;
+            
+        }else{
+            return false;
+        }
     });
     /* return -1;  */
 }
@@ -130,6 +121,7 @@ tycCheckbox.addEventListener("click", function(){
     }
 });
 
+
 regButton.addEventListener("click", function(){
 
     if (validateEmptyInputs()) {
@@ -139,11 +131,14 @@ regButton.addEventListener("click", function(){
             name:regInputs.regName.value, lastname:regInputs.regLname.value, email:regInputs.regEmail.value, psw:regInputs.regPsw.value
         }
 
-        fillEmail();
-        console.log(sequentialSearch(allEmail));
-    
-        /* localStorage.setItem(userInfo.email,JSON.stringify(userInfo)); */
-
+        if (sequentialSearch(userInfo.email)) {
+            alert(`El usuario con correo ${userInfo.email} ya existe`)
+            
+        } else {
+            localStorage.setItem(userInfo.email,JSON.stringify(userInfo));
+            divsToChangeDisplay([formDiv[0]],[divDash[0]]);
+            
+        }
 
     /* console.log(JSON.parse(localStorage.getItem("user1")).name); */
     } else {
