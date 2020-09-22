@@ -2,9 +2,11 @@
 
 const formDiv = document.getElementsByClassName("forms");
 const divDash = document.getElementsByClassName("dashboard");
+const divNavigationbar = document.getElementsByClassName("navigationbar");
 
-const inputEmailLogin = document.getElementById("login-email");
-const inputPswLogin = document.getElementById("login-psw");
+
+/* const inputEmailLogin = document.getElementById("login-email");
+const inputPswLogin = document.getElementById("login-psw"); */
 const loginButton = document.getElementById("login-button");
 
 const divsToChangeDisplay = ([...argsToNone],[...argsToFlex]) =>{
@@ -17,25 +19,48 @@ const divsToChangeDisplay = ([...argsToNone],[...argsToFlex]) =>{
     }    
 }
 
-/* loginOffDashOn(); */
-/* LOCALSTORAGE REGISTER DATA */
 
-const captureLoginData = (logValue, pswValue) =>{
-    localStorage.setItem('emailUser', logValue);
-    localStorage.setItem('emailUserPsw', pswValue);
+const render = (userId) => {
+    const objRender = JSON.parse(localStorage.getItem(userId));
+
+    if (objRender.list) {
+        const ulList = document.getElementById("name-list").querySelectorAll("ul")[0];
+
+        for (const i of objRender.list) {
+            const newLi = document.createElement("LI");
+            newLi.innerText = i;
+            ulList.appendChild(newLi);
+        }
+    }else{
+
+    }
+    
+}
+
+
+
+ /* LOGIN */
+
+let loginUser = {
+    email: document.getElementById("login-email"),
+    psw: document.getElementById("login-psw")
 }
 
 loginButton.addEventListener('click', function(){
 
-    captureLoginData(inputEmailLogin.value, inputPswLogin.value);
-    
+    if (sequentialSearch(loginUser.email.value)) {
 
-    if((localStorage.getItem("emailUser") === email) && (localStorage.getItem("emailUserPsw") === psw)){
-        divsToChangeDisplay([formDiv[0]],[divDash[0]]);
+        if(JSON.parse(localStorage.getItem(loginUser.email.value)).psw === loginUser.psw.value){
+            divsToChangeDisplay([formDiv[0]],[divDash[0],divNavigationbar[0]]);
+            localStorage.setItem("loginUser", loginUser.email.value);
+        }else{
+            alert("Incorrect password")
+        }
         
-    }else{
-        alert("Datos incorrectos!")
+    } else {
+        alert(`The user dont exist!`)
     }
+    
 });
 
 
@@ -49,7 +74,12 @@ signupButton.addEventListener('click', function() {
     divsToChangeDisplay([loginDiv[0]],[signupDiv[0]]);
 })
 
-/* LOCALSTORAGE REGISTER DATA */
+
+
+/* 
+        LOCALSTORAGE REGISTER USER DATA 
+*/
+
 
 
 /* Validate empty inputs  */
@@ -61,13 +91,13 @@ let regInputs = {
     regPsw: document.getElementById("reg-psw")
 }
 
-const validateEmptyInputs = () =>{
+const validateEmptyInputs = (input) =>{
 
     let isEmpty = 0;
         
-    Object.getOwnPropertyNames(regInputs).forEach(e => {
+    Object.getOwnPropertyNames(input).forEach(e => {
     
-        switch (Boolean(regInputs[e].value)) {
+        switch (Boolean(input[e].value)) {
             case true:
                 isEmpty++;
                 break;
@@ -90,16 +120,18 @@ const validateEmptyInputs = () =>{
 
 
 const sequentialSearch = (emailToBeSearched) =>{
+    let flag = false;
     Object.getOwnPropertyNames(localStorage).forEach(e => {
-        console.log(e, emailToBeSearched);
-        if (e === emailToBeSearched) {
-            return true;
-            
-        }else{
-            return false;
+        switch (e) {
+            case emailToBeSearched:
+                flag = true;
+                break;
+        
+            default:
+                break;
         }
     });
-    /* return -1;  */
+    return flag;
 }
 
 
@@ -124,20 +156,24 @@ tycCheckbox.addEventListener("click", function(){
 
 regButton.addEventListener("click", function(){
 
-    if (validateEmptyInputs()) {
+    if (validateEmptyInputs(regInputs)) {
 
                 
         const userInfo = {
-            name:regInputs.regName.value, lastname:regInputs.regLname.value, email:regInputs.regEmail.value, psw:regInputs.regPsw.value
+            name:regInputs.regName.value, 
+            lastname:regInputs.regLname.value, 
+            email:regInputs.regEmail.value, 
+            psw:regInputs.regPsw.value
         }
 
         if (sequentialSearch(userInfo.email)) {
-            alert(`El usuario con correo ${userInfo.email} ya existe`)
+            alert(`The user wit email ${userInfo.email} already exist!`)
             
         } else {
             localStorage.setItem(userInfo.email,JSON.stringify(userInfo));
             divsToChangeDisplay([formDiv[0]],[divDash[0]]);
-            
+            localStorage.setItem("loginUser", userInfo.email);
+            divNavigationbar.display = "flex";
         }
 
     /* console.log(JSON.parse(localStorage.getItem("user1")).name); */
@@ -148,4 +184,68 @@ regButton.addEventListener("click", function(){
     
 })
 
-/* tycCheckbox.checked ?  : regButton.disabled = true; */
+/*
+    DASHBOARD
+*/
+
+
+
+const list = {
+    set: document.getElementById("add-list-input"),
+    clear(){
+        this.set.value = "";
+    },
+    task:{
+        set:document.getElementById("add-task-input"),
+        items:[]
+    }
+}
+
+
+const ulParent = document.getElementById("name-list").querySelectorAll("ul")[0];
+const addListButton = document.getElementById("add-list-button");
+
+
+
+list.set.addEventListener("input", function(){
+    console.log(list.set.value);
+    switch (Boolean(list.set.value)) {
+        case true:
+            addListButton.disabled = false;
+            break;
+    
+        case false:
+            addListButton.disabled = true;
+            break;
+    }
+});
+
+
+render(localStorage.getItem("loginUser"));
+
+addListButton.addEventListener("click", function(){
+    const firstChild = ulParent.firstChild;
+    const newLi = document.createElement("LI");
+
+    newLi.innerText = list.set.value;
+    ulParent.insertBefore(newLi,firstChild);
+    
+    let itemsList = []
+    let temp = JSON.parse(localStorage.getItem(localStorage.getItem("loginUser")));
+
+        if (Object.keys(temp).length === 4) {
+            itemsList.unshift(list.set.value,[]);
+            temp.list = itemsList;
+            
+        } else {
+            temp.list.unshift(list.set.value);
+        }
+    
+    localStorage.setItem(localStorage.getItem("loginUser"),JSON.stringify(temp)); 
+    console.log(temp);
+    list.clear();
+    addListButton.disabled = true;
+});
+
+
+

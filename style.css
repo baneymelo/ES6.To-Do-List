@@ -102,6 +102,19 @@ input {
     outline: inherit;
 }
 
+#add-list-button{
+    width: 100%;
+    height: 30px;
+    border-radius: 10px;
+    color: white;
+    background: #ffbe6a;
+
+    border: 1px solid #afafaf;
+    cursor: pointer;
+    outline: inherit;
+}
+
+
 #login-button{
     background:#33b349;
 }
@@ -154,7 +167,7 @@ div > input {
     min-width: 1290px;
     min-height: 540px;
     border: 1px #1d1d1d solid;
-    display: none;
+    /* display: none; */
 }
 
 .header-list{
@@ -183,19 +196,20 @@ div > input {
 
 #name-list{
     width: 375px;
-    height: 350px;
+    height: 380px;
+    overflow: scroll;
     /* border: 1px #1d1d1d solid; */
 }
 
-#add-list > ul > a > li {
-    list-style-type: none;
-    text-align: center;
-    font-size: 24px;
-    
+#add-list{
+    margin-top:2px;
+    /* border: 1px #1d1d1d solid; */
 }
+
 
 #name-list > ul, #add-list > ul{
     padding-inline-start: 0;
+    
 }
 
 #name-list > ul > li{
@@ -205,6 +219,11 @@ div > input {
     overflow: hidden;
     padding: 0 12px;
     background: #f6fcfa
+}
+
+
+#name-list > ul > li:hover{
+    border: 1px #9e9e9e solid;
 }
 
 #add-list{
@@ -255,3 +274,4 @@ div > input {
     /* border: 1px #1d1d1d solid; */
     overflow: hidden;
 }
+
