@@ -28,7 +28,7 @@ const render = (userId) => {
 
         for (const i of objRender.list) {
             const newLi = document.createElement("LI");
-            newLi.innerText = i;
+            newLi.innerText = i[0];
             ulList.appendChild(newLi);
         }
     }else{
@@ -227,18 +227,18 @@ addListButton.addEventListener("click", function(){
     const firstChild = ulParent.firstChild;
     const newLi = document.createElement("LI");
 
-    newLi.innerText = list.set.value;
+    newLi.innerText = list.set.value.toUpperCase();
     ulParent.insertBefore(newLi,firstChild);
-    
+
     let itemsList = []
     let temp = JSON.parse(localStorage.getItem(localStorage.getItem("loginUser")));
 
         if (Object.keys(temp).length === 4) {
-            itemsList.unshift(list.set.value,[]);
+            itemsList.unshift([list.set.value.toUpperCase(),[]]);
             temp.list = itemsList;
             
         } else {
-            temp.list.unshift(list.set.value);
+            temp.list.unshift([list.set.value.toUpperCase(),[]]);
         }
     
     localStorage.setItem(localStorage.getItem("loginUser"),JSON.stringify(temp)); 
@@ -248,4 +248,39 @@ addListButton.addEventListener("click", function(){
 });
 
 
+/* 
+        ADD TASKS 
+*/
 
+/* Choice list */
+
+const liSelected = ulParent.querySelectorAll("LI");
+
+liSelected.forEach(e => {   
+    e.addEventListener("click",function (ele) {
+        document.getElementById("list-header").innerHTML = ele.path[0].innerText;
+    });
+});
+    
+const inputItem = document.querySelector("#add-task-input");
+
+/* Enter input and save item*/
+
+inputItem.addEventListener("keyup",function (e) {
+    const headerList = document.getElementById("list-header");
+    const temp = JSON.parse(localStorage.getItem(localStorage.getItem("loginUser")));
+    
+    if (e.keyCode === 13) {
+        let ids = [];
+        let itemsTask = [];
+        for (const j in temp.list) {
+            if(temp.list[j][0].toString() === headerList.innerHTML){
+                ids = j;
+            }
+        }
+        itemsTask = temp.list[ids];
+        itemsTask[1].unshift(inputItem.value.toUpperCase());
+        temp.list[ids] = itemsTask;
+        localStorage.setItem(localStorage.getItem("loginUser"),JSON.stringify(temp));
+    }
+});
