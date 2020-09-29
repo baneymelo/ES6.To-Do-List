@@ -19,25 +19,125 @@ const divsToChangeDisplay = ([...argsToNone],[...argsToFlex]) =>{
     }    
 }
 
+let idList = 0;
 
-const render = (userId) => {
-    const objRender = JSON.parse(localStorage.getItem(userId));
+//////////////////////////////// UlObject //////////////////////////////////
 
-    if (objRender.list) {
-        const ulList = document.getElementById("name-list").querySelectorAll("ul")[0];
+const UlObject = {
+    saveDataToLocalStorage:function(userId,value,option,...ele){
+        switch (option) {
+            case "list":
+            
+                let itemsList = []
+                let tempList = JSON.parse(localStorage.getItem(userId));
 
-        for (const i of objRender.list) {
-            const newLi = document.createElement("LI");
-            newLi.innerText = i[0];
-            ulList.appendChild(newLi);
+                    if (Object.keys(tempList).length === 4) {
+                        itemsList.unshift([value,[]]);
+                        tempList.list = itemsList;
+                    
+                    }else{
+                        tempList.list.unshift([value,[]]);
+                    }
+        
+                localStorage.setItem(localStorage.getItem("loginUser"),JSON.stringify(tempList)); 
+                regData.list.clear();
+                regData.list.button.disabled = true;
+            
+            break;
+        
+            case "task":
+                const tempTask = JSON.parse(localStorage.getItem(userId));
+                
+                if (ele[0].keyCode === 13) {
+
+                    if (value) {
+                        tempTask.list[idList][1].unshift(value);
+                        localStorage.setItem(localStorage.getItem("loginUser"),JSON.stringify(tempTask));
+                        regData.task.clear();
+                    } else {
+                        alert("Empty fields are not accepted, please enter a value");    
+                    }   
+                }             
+            break;
         }
-    }else{
+    },
+    render:function(userId,option){
+        switch (option) {
+            case "list":
+                const ulListParent = document.querySelector("#ul-list");
+                ulListParent.parentNode.removeChild(ulListParent);
 
+                const divListParent = document.querySelector("#name-list");
+                const newUl = document.createElement("UL");
+                newUl.id = "ul-list";
+                divListParent.appendChild(newUl);
+
+                const objL = JSON.parse(localStorage.getItem(userId));
+
+                    if (objL.list) {            
+                        for (const i in objL.list) {
+                            const newLi = document.createElement("LI");
+                            newLi.innerText = objL.list[i][0];
+                            newLi.id = i;
+                            newUl.appendChild(newLi);
+                        }
+                    }else{
+                        false;
+                    }
+
+            break;
+        
+            case "task":
+                /* const ulTaskParent = document.querySelector("#ul-task");
+                ulParent.parentNode.removeChild(ulTaskParent);
+
+                const divTaskParent = document.querySelector("#name-task");
+                const newUl = document.createElement("UL");
+                newUl.id = "ul-task";
+                divTaskParent.appendChild(newUl); */
+                const headerList = document.querySelector("#list-header").innerText;
+                const objT = JSON.parse(localStorage.getItem(userId));
+                console.log(objT.list[idList][1]);
+                if (headerList !== "Select a list") {
+                    console.log(objT.list[idList][1]);
+                } else {
+                    false;
+                }
+                 /*
+                 objT.list[idList][1].forEach(e =>{
+                    console.log(e);
+                });
+                    
+                    if (objT.list[idList]) {            
+                        for (const i in objT.list) {
+                            const newLi = document.createElement("LI");
+                            newLi.innerText = objT.list[i][0];
+                            newLi.id = i;
+                            newUl.appendChild(newLi);
+                        }
+                    }else{
+                        false;
+                    }  */
+
+            break;
+        }
+    },
+    liAddEvent:function(){
+        const ulList = document.querySelector("#ul-list");
+        const liList = ulList.querySelectorAll("li");
+        
+        liList.forEach(li => {
+            li.addEventListener("click", () =>{
+                document.querySelector("#list-header").textContent = li.innerText; 
+                idList = li.id;
+            });
+        });
+        document.querySelector("#total-list").textContent = liList.length;
+        
     }
-    
 }
 
-
+//////////////////////////////// UlObject //////////////////////////////////
 
  /* LOGIN */
 
@@ -53,6 +153,7 @@ loginButton.addEventListener('click', function(){
         if(JSON.parse(localStorage.getItem(loginUser.email.value)).psw === loginUser.psw.value){
             divsToChangeDisplay([formDiv[0]],[divDash[0],divNavigationbar[0]]);
             localStorage.setItem("loginUser", loginUser.email.value);
+            UlObject.render(localStorage.getItem("loginUser"),"list");
         }else{
             alert("Incorrect password")
         }
@@ -64,7 +165,7 @@ loginButton.addEventListener('click', function(){
 });
 
 
-/* SIGNUP */
+/* SIGNUP FORM */
 
 const signupButton = document.getElementById('signup-button');
 const signupDiv = document.getElementsByClassName('f-signup');
@@ -74,13 +175,9 @@ signupButton.addEventListener('click', function() {
     divsToChangeDisplay([loginDiv[0]],[signupDiv[0]]);
 })
 
-
-
 /* 
         LOCALSTORAGE REGISTER USER DATA 
 */
-
-
 
 /* Validate empty inputs  */
 
@@ -173,7 +270,7 @@ regButton.addEventListener("click", function(){
             localStorage.setItem(userInfo.email,JSON.stringify(userInfo));
             divsToChangeDisplay([formDiv[0]],[divDash[0]]);
             localStorage.setItem("loginUser", userInfo.email);
-            divNavigationbar.display = "flex";
+            UlObject.render(localStorage.getItem("loginUser"),"list");
         }
 
     /* console.log(JSON.parse(localStorage.getItem("user1")).name); */
@@ -184,103 +281,64 @@ regButton.addEventListener("click", function(){
     
 })
 
+
 /*
     DASHBOARD
 */
 
+UlObject.render(localStorage.getItem("loginUser"),"list");
+UlObject.render(localStorage.getItem("loginUser"),"task");
+UlObject.liAddEvent();
 
-
-const list = {
-    set: document.getElementById("add-list-input"),
-    clear(){
-        this.set.value = "";
+const regData = {
+    list:{
+        input: document.querySelector("#add-list-input"),
+        button: document.querySelector("#add-list-button"),
+        clear(){
+            this.input.value = "";
+        }
     },
     task:{
-        set:document.getElementById("add-task-input"),
-        items:[]
+        input: document.querySelector("#add-task-input"),
+        clear(){
+            this.input.value = "";
+        }
     }
 }
 
 
-const ulParent = document.getElementById("name-list").querySelectorAll("ul")[0];
-const addListButton = document.getElementById("add-list-button");
 
-
-
-list.set.addEventListener("input", function(){
-    console.log(list.set.value);
-    switch (Boolean(list.set.value)) {
+regData.list.input.addEventListener("input", function(){
+    switch (Boolean(regData.list.input.value)) {
         case true:
-            addListButton.disabled = false;
+            regData.list.button.disabled = false;
             break;
     
         case false:
-            addListButton.disabled = true;
+            regData.list.button.disabled = true;
             break;
     }
 });
 
 
-render(localStorage.getItem("loginUser"));
-
-addListButton.addEventListener("click", function(){
-    const firstChild = ulParent.firstChild;
-    const newLi = document.createElement("LI");
-
-    newLi.innerText = list.set.value.toUpperCase();
-    ulParent.insertBefore(newLi,firstChild);
-
-    let itemsList = []
-    let temp = JSON.parse(localStorage.getItem(localStorage.getItem("loginUser")));
-
-        if (Object.keys(temp).length === 4) {
-            itemsList.unshift([list.set.value.toUpperCase(),[]]);
-            temp.list = itemsList;
-            
-        } else {
-            temp.list.unshift([list.set.value.toUpperCase(),[]]);
-        }
-    
-    localStorage.setItem(localStorage.getItem("loginUser"),JSON.stringify(temp)); 
-    console.log(temp);
-    list.clear();
-    addListButton.disabled = true;
+regData.list.button.addEventListener("click", function(){
+    const userId = localStorage.getItem("loginUser");
+    const inputValue = regData.list.input.value.toUpperCase();
+    UlObject.saveDataToLocalStorage(userId,inputValue,"list");
+    UlObject.render(userId,"list");
+    UlObject.liAddEvent();
 });
-
 
 /* 
         ADD TASKS 
 */
-
-/* Choice list */
-
-const liSelected = ulParent.querySelectorAll("LI");
-
-liSelected.forEach(e => {   
-    e.addEventListener("click",function (ele) {
-        document.getElementById("list-header").innerHTML = ele.path[0].innerText;
-    });
-});
     
-const inputItem = document.querySelector("#add-task-input");
+/* Save tasks and render*/
 
-/* Enter input and save item*/
-
-inputItem.addEventListener("keyup",function (e) {
-    const headerList = document.getElementById("list-header");
-    const temp = JSON.parse(localStorage.getItem(localStorage.getItem("loginUser")));
+regData.task.input.addEventListener("keyup",function (e) {
     
-    if (e.keyCode === 13) {
-        let ids = [];
-        let itemsTask = [];
-        for (const j in temp.list) {
-            if(temp.list[j][0].toString() === headerList.innerHTML){
-                ids = j;
-            }
-        }
-        itemsTask = temp.list[ids];
-        itemsTask[1].unshift(inputItem.value.toUpperCase());
-        temp.list[ids] = itemsTask;
-        localStorage.setItem(localStorage.getItem("loginUser"),JSON.stringify(temp));
-    }
+    const userId = localStorage.getItem("loginUser");
+    const inputValue = regData.task.input.value.toUpperCase();
+    UlObject.saveDataToLocalStorage(userId,inputValue,"task",e);
+    UlObject.render(userId,"task");
 });

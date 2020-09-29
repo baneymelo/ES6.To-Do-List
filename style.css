@@ -34,7 +34,7 @@ body{
     align-items: center;
     height: 500px;
     border: 1px #E7E7E7 solid;
-    /* display: none; */
+    display: none;
 }
 
 .imgApp{
