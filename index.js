@@ -51,11 +51,11 @@ const UlObject = {
                 if (ele[0].keyCode === 13) {
 
                     if (value) {
-                        tempTask.list[idList][1].unshift(value);
+                        tempTask.list[idList][1].unshift([value,0]);
                         localStorage.setItem(localStorage.getItem("loginUser"),JSON.stringify(tempTask));
                         regData.task.clear();
                     } else {
-                        alert("Empty fields are not accepted, please enter a value");    
+                        console.log("Empty fields are not accepted, please enter a value");    
                     }   
                 }             
             break;
@@ -88,50 +88,81 @@ const UlObject = {
             break;
         
             case "task":
-                /* const ulTaskParent = document.querySelector("#ul-task");
-                ulParent.parentNode.removeChild(ulTaskParent);
+                
+                const ulTask = document.querySelector("#ul-task");
+                ulTask.parentNode.removeChild(ulTask);
 
-                const divTaskParent = document.querySelector("#name-task");
-                const newUl = document.createElement("UL");
-                newUl.id = "ul-task";
-                divTaskParent.appendChild(newUl); */
-                const headerList = document.querySelector("#list-header").innerText;
+                const divTask = document.querySelector("#div-task");
+                const newTul = document.createElement("UL");
+                newTul.id = "ul-task";
+                divTask.appendChild(newTul); 
+               
+
+                const headerListSelected = document.querySelector("#list-header").innerText;
                 const objT = JSON.parse(localStorage.getItem(userId));
-                console.log(objT.list[idList][1]);
-                if (headerList !== "Select a list") {
-                    console.log(objT.list[idList][1]);
-                } else {
-                    false;
-                }
-                 /*
-                 objT.list[idList][1].forEach(e =>{
-                    console.log(e);
-                });
+                
+                    switch (headerListSelected) {
+                        case "Select a list":
+                            break;
                     
-                    if (objT.list[idList]) {            
-                        for (const i in objT.list) {
+                        default:
+                        
+                        for (const v of objT.list[idList][1]) {
+                                                
                             const newLi = document.createElement("LI");
-                            newLi.innerText = objT.list[i][0];
-                            newLi.id = i;
-                            newUl.appendChild(newLi);
-                        }
-                    }else{
-                        false;
-                    }  */
+                            const newH4 = document.createElement("H4");
+                            v[1] === 1? newH4.style.textDecoration = "line-through" : false;
+                            newH4.innerText = v[0];                    
+                            newLi.appendChild(newH4);
+                            newTul.appendChild(newLi);
+                            document.querySelector("#edit-button").disabled = false;
+                        }    
+                            break;
+                    }
 
-            break;
+                break;
+            }
+    },
+    
+    taskCompleted:function(userId,e,nameTask){
+        
+        const objTask = JSON.parse(localStorage.getItem(userId));
+
+        for (const t of objTask.list[idList][1]) {
+            if (nameTask === t[0]) {
+                t[1] === 0 
+                ? ( t[1] = 1, e.textDecoration = "line-through", localStorage.setItem(userId,JSON.stringify(objTask)) )
+                : ( t[1] = 0, e.textDecoration = "none", localStorage.setItem(userId,JSON.stringify(objTask)) )
+            }
         }
     },
+
     liAddEvent:function(){
+
         const ulList = document.querySelector("#ul-list");
         const liList = ulList.querySelectorAll("li");
-        
+
         liList.forEach(li => {
             li.addEventListener("click", () =>{
                 document.querySelector("#list-header").textContent = li.innerText; 
                 idList = li.id;
+                UlObject.render(localStorage.getItem("loginUser"),"task");
+
+                const ulTask = document.querySelector("#ul-task");
+                const liTask = ulTask.querySelectorAll("li");
+                
+                liTask.forEach(ts => {
+                    ts.addEventListener("click", (e) =>{
+                        
+                        UlObject.taskCompleted(localStorage.getItem("loginUser"), e.path[0].style, e.path[0].innerText);
+
+                    });
+                });
             });
         });
+
+
+
         document.querySelector("#total-list").textContent = liList.length;
         
     }
@@ -286,9 +317,12 @@ regButton.addEventListener("click", function(){
     DASHBOARD
 */
 
+const renameTaskInput = document.querySelector("#edit-input");
+renameTaskInput.style.display = "none";
 UlObject.render(localStorage.getItem("loginUser"),"list");
-UlObject.render(localStorage.getItem("loginUser"),"task");
 UlObject.liAddEvent();
+
+const editTaskButton = document.querySelector("#edit-button");
 
 const regData = {
     list:{
@@ -342,3 +376,26 @@ regData.task.input.addEventListener("keyup",function (e) {
     UlObject.saveDataToLocalStorage(userId,inputValue,"task",e);
     UlObject.render(userId,"task");
 });
+
+
+editTaskButton.addEventListener("click",function(){
+    /* renameTaskInput.style.display = "inline";
+    editTaskButton.innerText = "SAVE"; */
+
+    switch (editTaskButton.innerText) {
+        case "EDIT":
+            renameTaskInput.style.display = "inline";
+            editTaskButton.innerText = "SAVE";
+            break;
+    
+        case "SAVE":
+            
+            break;
+        
+    }
+    
+
+     
+
+
+})

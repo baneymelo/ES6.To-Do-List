@@ -51,7 +51,7 @@ body{
     LOGIN 
 */
 
-.f-login > h1{
+.f-login > h1, .header-list > p{
     font-family: 'Press Start 2P', cursive; 
 }
 
@@ -159,6 +159,12 @@ div > input {
     DASHBOARD 
 */
 
+.header-list > p{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .dashboard{
     display: flex;
     flex-direction: row;
@@ -181,15 +187,34 @@ div > input {
     width: 858px;
     height: 88px;
     border: 1px #1d1d1d solid;
+    background: rgb(73, 73, 73)
 }
+
+#edit-button, #edit-input, #list-header{ margin-left: 32px;}
+
+#list-header{ 
+    font-size: 24px;
+    padding-top:10px;
+    margin: 10px 32px 10px;
+    color:#fff;
+    font-weight: bold;
+}
+
+#edit-button{
+    
+        color: rgb(3, 2, 2);
+        border: none;
+        background: rgb(236, 235, 144);
+        cursor: pointer;
+        outline: inherit;
+}
+
 .list{
     display: flex;
     flex-direction: column;
     align-items: center;
-
     width: 428px;
     height: 448px;
-    /* border: 1px #1d1d1d solid; */
     background: #EBECF0;
 }
 
@@ -207,12 +232,12 @@ div > input {
 }
 
 
-#name-list > ul, #add-list > ul{
+#name-list > ul, #add-list > ul {
     padding-inline-start: 0;
     
 }
 
-#name-list > ul > li{
+#name-list > ul > li {
     list-style: none;
     margin-top: 10px;
     border: 1px #b3c6e7b2 solid;
@@ -270,13 +295,49 @@ div > input {
     border: 1px #1d1d1d solid;
 }
 
-.task{
+#div-task{
     width: 858px;
     height: 390px;
     overflow: scroll;
 }
 
-
 #add-task-input{
     margin-top: 20px;
+}
+
+#ul-task {
+    padding-inline-start: 2em;
+    padding-inline-end: 2em;
+}
+
+#ul-task > li{
+    height: 20px;
+    display: flex;
+    align-items: center;
+}
+
+#ul-task > li:hover{
+    background:  #ffd693ee;
+}
+
+#ul-task > li{
+    list-style: none;
+    margin-top: 2px;
+    border: 1px #eed48ecb solid;
+    overflow: hidden;
+    padding: 0 12px;
+    background: #f7e2b5
+}
+
+h4{
+    width: 100%;
+    height: 100%;
+    font-size: 14px;
+    text-align: justify;
+    padding-top: 7px;
+}
+
+h4:hover{
+   color: #fff; 
+   
 }
