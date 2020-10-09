@@ -63,6 +63,7 @@ const UlObject = {
     },
     render:function(userId,option){
         switch (option) {
+
             case "list":
                 const ulListParent = document.querySelector("#ul-list");
                 ulListParent.parentNode.removeChild(ulListParent);
@@ -78,7 +79,7 @@ const UlObject = {
                         for (const i in objL.list) {
                             const newLi = document.createElement("LI");
                             newLi.innerText = objL.list[i][0];
-                            newLi.id = i;
+                            newLi.id = "l"+i;
                             newUl.appendChild(newLi);
                         }
                     }else{
@@ -96,75 +97,37 @@ const UlObject = {
                 const newTul = document.createElement("UL");
                 newTul.id = "ul-task";
                 divTask.appendChild(newTul); 
-               
 
-                const headerListSelected = document.querySelector("#list-header").innerText;
                 const objT = JSON.parse(localStorage.getItem(userId));
                 
-                    switch (headerListSelected) {
-                        case "Select a list":
-                            break;
-                    
-                        default:
-                        
-                        for (const v of objT.list[idList][1]) {
+                if (document.querySelector("#list-header").innerText !== "Select a list") {
+                    for (const v of objT.list[idList][1]) {
                                                 
-                            const newLi = document.createElement("LI");
-                            const newH4 = document.createElement("H4");
-                            v[1] === 1? newH4.style.textDecoration = "line-through" : false;
-                            newH4.innerText = v[0];                    
-                            newLi.appendChild(newH4);
-                            newTul.appendChild(newLi);
-                            document.querySelector("#edit-button").disabled = false;
-                        }    
-                            break;
-                    }
-
-                break;
+                        const newLi = document.createElement("LI");
+                        const newH4 = document.createElement("H4");
+                        v[1] === 1? newH4.style.textDecoration = "line-through" : false;
+                        newH4.innerText = v[0];                    
+                        newLi.appendChild(newH4);
+                        newTul.appendChild(newLi);
+                        document.querySelector("#edit-button").disabled = false;
+                    }  
+                }
+                    
+            break;
             }
     },
     
-    taskCompleted:function(userId,e,nameTask){
-        
+    taskCompleted:function(userId,element,nameTask){
+       
         const objTask = JSON.parse(localStorage.getItem(userId));
-
+        
         for (const t of objTask.list[idList][1]) {
             if (nameTask === t[0]) {
                 t[1] === 0 
-                ? ( t[1] = 1, e.textDecoration = "line-through", localStorage.setItem(userId,JSON.stringify(objTask)) )
-                : ( t[1] = 0, e.textDecoration = "none", localStorage.setItem(userId,JSON.stringify(objTask)) )
+                ? ( t[1] = 1, element.textDecoration = "line-through", localStorage.setItem(userId,JSON.stringify(objTask)) )
+                : ( t[1] = 0, element.textDecoration = "none", localStorage.setItem(userId,JSON.stringify(objTask)) )
             }
         }
-    },
-
-    liAddEvent:function(){
-
-        const ulList = document.querySelector("#ul-list");
-        const liList = ulList.querySelectorAll("li");
-
-        liList.forEach(li => {
-            li.addEventListener("click", () =>{
-                document.querySelector("#list-header").textContent = li.innerText; 
-                idList = li.id;
-                UlObject.render(localStorage.getItem("loginUser"),"task");
-
-                const ulTask = document.querySelector("#ul-task");
-                const liTask = ulTask.querySelectorAll("li");
-                
-                liTask.forEach(ts => {
-                    ts.addEventListener("click", (e) =>{
-                        
-                        UlObject.taskCompleted(localStorage.getItem("loginUser"), e.path[0].style, e.path[0].innerText);
-
-                    });
-                });
-            });
-        });
-
-
-
-        document.querySelector("#total-list").textContent = liList.length;
-        
     }
 }
 
@@ -304,7 +267,6 @@ regButton.addEventListener("click", function(){
             UlObject.render(localStorage.getItem("loginUser"),"list");
         }
 
-    /* console.log(JSON.parse(localStorage.getItem("user1")).name); */
     } else {
         alert("Incomplete information");
     }
@@ -317,10 +279,26 @@ regButton.addEventListener("click", function(){
     DASHBOARD
 */
 
+
+
 const renameTaskInput = document.querySelector("#edit-input");
 renameTaskInput.style.display = "none";
 UlObject.render(localStorage.getItem("loginUser"),"list");
-UlObject.liAddEvent();
+UlObject.render(localStorage.getItem("loginUser"),"task");
+
+const totalList = () =>{
+    const tl = document.querySelector("#ul-list");
+    const totalList = document.querySelector("#total-list");
+
+    totalList.innerHTML = tl.children.length;
+}
+
+totalList();
+
+const resetEditButtonInput = () => {
+    renameTaskInput.style.display = "none";
+    editTaskButton.innerText = "EDIT";
+} 
 
 const editTaskButton = document.querySelector("#edit-button");
 
@@ -341,6 +319,39 @@ const regData = {
 }
 
 
+// CONTROLLER:
+
+document.body.addEventListener("click", function(e){
+    
+    const userId = localStorage.getItem("loginUser");
+    const listSelected = document.querySelector("#list-header");
+    
+    const tgt = e.target;
+    let key;
+    console.log(e);
+    if (tgt.nodeName === "LI" && Boolean(tgt.id)) {
+        key = "list";
+    }else if (tgt.nodeName === "H4") {
+        key = "task";
+    }else if (tgt.nodeName === "BUTTON") {
+        console.log(tgt.innerText === "SAVE");
+    }
+
+    switch (key) {
+        case "list":
+            idList = Number(tgt.id.substring(1));
+            listSelected.innerText = tgt.innerText; 
+            UlObject.render(userId,"task");
+            resetEditButtonInput();
+        break;
+    
+        case "task":
+            UlObject.taskCompleted(userId,tgt.style,tgt.innerText);
+        break;
+    }
+
+});
+
 
 regData.list.input.addEventListener("input", function(){
     switch (Boolean(regData.list.input.value)) {
@@ -360,7 +371,7 @@ regData.list.button.addEventListener("click", function(){
     const inputValue = regData.list.input.value.toUpperCase();
     UlObject.saveDataToLocalStorage(userId,inputValue,"list");
     UlObject.render(userId,"list");
-    UlObject.liAddEvent();
+    totalList();
 });
 
 /* 
@@ -379,10 +390,9 @@ regData.task.input.addEventListener("keyup",function (e) {
 
 
 editTaskButton.addEventListener("click",function(){
-    /* renameTaskInput.style.display = "inline";
-    editTaskButton.innerText = "SAVE"; */
 
     switch (editTaskButton.innerText) {
+
         case "EDIT":
             renameTaskInput.style.display = "inline";
             editTaskButton.innerText = "SAVE";
@@ -390,12 +400,20 @@ editTaskButton.addEventListener("click",function(){
     
         case "SAVE":
             
+            const v = renameTaskInput.value.toUpperCase();
+            const userId = localStorage.getItem("loginUser");
+            const objToRename = JSON.parse(localStorage.getItem(userId));
+
+            objToRename.list[idList][0] = v;
+            document.querySelector("#list-header").innerText = v;
+            document.getElementById(`l${idList}`).innerText = v;
+            renameTaskInput.value = "";
+            renameTaskInput.style.display = "none";
+            editTaskButton.innerText = "EDIT";
+
+            localStorage.setItem(userId,JSON.stringify(objToRename));
+            UlObject.render(userId,"list");
             break;
-        
     }
-    
-
-     
-
-
 })
+

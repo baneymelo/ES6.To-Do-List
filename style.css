@@ -1,4 +1,8 @@
+@import url(https://cdn.jsdelivr.net/gh/tonsky/FiraCode@4/distr/fira_code.css);
+
+
 body{
+    font-family: 'Fira Code', monospace;
     margin: auto;
     max-width: 1290px;
     font-family: 'Nunito Sans', sans-serif;
@@ -192,6 +196,12 @@ div > input {
 
 #edit-button, #edit-input, #list-header{ margin-left: 32px;}
 
+#edit-input{
+    width: 250px;
+    height: 20px;
+    margin-bottom: 20px;
+}
+
 #list-header{ 
     font-size: 24px;
     padding-top:10px;
@@ -204,7 +214,7 @@ div > input {
     
         color: rgb(3, 2, 2);
         border: none;
-        background: rgb(236, 235, 144);
+        background: rgb(236, 236, 210);
         cursor: pointer;
         outline: inherit;
 }
