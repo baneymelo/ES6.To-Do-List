@@ -3,20 +3,23 @@
 const formDiv = document.getElementsByClassName("forms");
 const divDash = document.getElementsByClassName("dashboard");
 const divNavigationbar = document.getElementsByClassName("navigationbar");
+const settings = document.querySelector(".settings");
 
+//
+const divLogin = document.querySelector(".f-login")
+const divSign = document.querySelector(".f-signup");
 
-/* const inputEmailLogin = document.getElementById("login-email");
-const inputPswLogin = document.getElementById("login-psw"); */
 const loginButton = document.getElementById("login-button");
 
 const divsToChangeDisplay = ([...argsToNone],[...argsToFlex]) =>{
 
-    for (const key of argsToNone) {
-        key.style.display = "none";
-    }
-    for (const key of argsToFlex) {
-        key.style.display = "flex";
-    }    
+    argsToNone.forEach(e => {
+        e.style.display = "none";
+    });
+
+    argsToFlex.forEach(e => {
+        e.style.display = "flex"
+    })
 }
 
 let idList = 0;
@@ -67,14 +70,14 @@ const UlObject = {
             case "list":
                 const ulListParent = document.querySelector("#ul-list");
                 ulListParent.parentNode.removeChild(ulListParent);
-
+                
                 const divListParent = document.querySelector("#name-list");
                 const newUl = document.createElement("UL");
                 newUl.id = "ul-list";
                 divListParent.appendChild(newUl);
 
                 const objL = JSON.parse(localStorage.getItem(userId));
-
+                
                     if (objL.list) {            
                         for (const i in objL.list) {
                             const newLi = document.createElement("LI");
@@ -133,7 +136,7 @@ const UlObject = {
 
 //////////////////////////////// UlObject //////////////////////////////////
 
- /* LOGIN */
+ // LOGIN 
 
 let loginUser = {
     email: document.getElementById("login-email"),
@@ -147,6 +150,7 @@ loginButton.addEventListener('click', function(){
         if(JSON.parse(localStorage.getItem(loginUser.email.value)).psw === loginUser.psw.value){
             divsToChangeDisplay([formDiv[0]],[divDash[0],divNavigationbar[0]]);
             localStorage.setItem("loginUser", loginUser.email.value);
+            console.log("oliwis");
             UlObject.render(localStorage.getItem("loginUser"),"list");
         }else{
             alert("Incorrect password")
@@ -159,7 +163,7 @@ loginButton.addEventListener('click', function(){
 });
 
 
-/* SIGNUP FORM */
+// SIGNUP FORM 
 
 const signupButton = document.getElementById('signup-button');
 const signupDiv = document.getElementsByClassName('f-signup');
@@ -262,7 +266,7 @@ regButton.addEventListener("click", function(){
             
         } else {
             localStorage.setItem(userInfo.email,JSON.stringify(userInfo));
-            divsToChangeDisplay([formDiv[0]],[divDash[0]]);
+            divsToChangeDisplay([formDiv[0]],[divDash[0],divNavigationbar[0]]);
             localStorage.setItem("loginUser", userInfo.email);
             UlObject.render(localStorage.getItem("loginUser"),"list");
         }
@@ -279,10 +283,8 @@ regButton.addEventListener("click", function(){
     DASHBOARD
 */
 
+/* divNavigationbar[0].style.display = "flex"; */
 
-
-const renameTaskInput = document.querySelector("#edit-input");
-renameTaskInput.style.display = "none";
 UlObject.render(localStorage.getItem("loginUser"),"list");
 UlObject.render(localStorage.getItem("loginUser"),"task");
 
@@ -295,12 +297,22 @@ const totalList = () =>{
 
 totalList();
 
-const resetEditButtonInput = () => {
-    renameTaskInput.style.display = "none";
-    editTaskButton.innerText = "EDIT";
-} 
 
-const editTaskButton = document.querySelector("#edit-button");
+const renameList = {
+    button: document.querySelector("#edit-button"),
+    input: document.querySelector("#edit-input"),
+    clear:function(){
+        this.input.value = "";
+    },
+    display:function(){
+        this.input.style.display = "inline",
+        this.button.innerText = "SAVE"
+    },
+    reset:function(){
+       this.input.style.display = "none",
+       this.button.innerText = "EDIT"
+    }
+}
 
 const regData = {
     list:{
@@ -333,8 +345,42 @@ document.body.addEventListener("click", function(e){
         key = "list";
     }else if (tgt.nodeName === "H4") {
         key = "task";
-    }else if (tgt.nodeName === "BUTTON") {
-        console.log(tgt.innerText === "SAVE");
+    }else if (tgt.innerText === "Logout") {
+        divsToChangeDisplay([divDash[0],divNavigationbar[0],divSign],[formDiv[0], divLogin]);
+        
+        localStorage.setItem("loginUser","");
+    }else if (tgt.innerText === "Account settings"){
+        divDash[0].style.display = "none";            
+        settings.style.display = "flex";
+        
+        const userInfo = JSON.parse(localStorage.getItem(userId));
+        const nameInput = document.querySelector("#name");
+        const lnameInput = document.querySelector("#lname");
+        const emailInput = document.querySelector("#email");
+        const passInput = document.querySelector("#pass");
+        const saveChanges = document.querySelector("#sc");
+            
+        nameInput.value = userInfo.name;
+        lnameInput.value = userInfo.lastname;
+        emailInput.value = userInfo.email;
+        passInput.value = userInfo.psw;
+        
+        
+        saveChanges.addEventListener("click",function(){
+            userInfo.name = nameInput.value; 
+            userInfo.lastname = lnameInput.value;
+            userInfo.email = emailInput.value;
+            userInfo.psw = passInput.value;
+            
+            localStorage.removeItem(userId);
+            localStorage.setItem(userInfo.email,JSON.stringify(userInfo));
+            localStorage.setItem("loginUser",userInfo.email);
+
+            divsToChangeDisplay([settings],[divDash[0]]);
+
+            UlObject.render(localStorage.getItem("loginUser"),"list");
+            UlObject.render(localStorage.getItem("loginUser"),"task");
+        });
     }
 
     switch (key) {
@@ -342,7 +388,7 @@ document.body.addEventListener("click", function(e){
             idList = Number(tgt.id.substring(1));
             listSelected.innerText = tgt.innerText; 
             UlObject.render(userId,"task");
-            resetEditButtonInput();
+            renameList.reset();
         break;
     
         case "task":
@@ -351,6 +397,7 @@ document.body.addEventListener("click", function(e){
     }
 
 });
+
 
 
 regData.list.input.addEventListener("input", function(){
@@ -365,6 +412,7 @@ regData.list.input.addEventListener("input", function(){
     }
 });
 
+// ADD LIST
 
 regData.list.button.addEventListener("click", function(){
     const userId = localStorage.getItem("loginUser");
@@ -389,31 +437,28 @@ regData.task.input.addEventListener("keyup",function (e) {
 });
 
 
-editTaskButton.addEventListener("click",function(){
+renameList.button.addEventListener("click",function(){
 
-    switch (editTaskButton.innerText) {
+    switch (renameList.button.innerText) {
 
         case "EDIT":
-            renameTaskInput.style.display = "inline";
-            editTaskButton.innerText = "SAVE";
+            renameList.display();
             break;
     
         case "SAVE":
             
-            const v = renameTaskInput.value.toUpperCase();
+            const v = renameList.input.value.toUpperCase();
             const userId = localStorage.getItem("loginUser");
             const objToRename = JSON.parse(localStorage.getItem(userId));
 
             objToRename.list[idList][0] = v;
             document.querySelector("#list-header").innerText = v;
             document.getElementById(`l${idList}`).innerText = v;
-            renameTaskInput.value = "";
-            renameTaskInput.style.display = "none";
-            editTaskButton.innerText = "EDIT";
+            renameList.clear();
+            renameList.reset();
 
             localStorage.setItem(userId,JSON.stringify(objToRename));
             UlObject.render(userId,"list");
             break;
     }
-})
-
+});
